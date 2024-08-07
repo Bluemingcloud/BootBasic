@@ -37,6 +37,9 @@ dependencies {
 	//jstl
 	//implementation 'javax.servlet:jstl:1.2'
 
+	// 유효성 검증
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {

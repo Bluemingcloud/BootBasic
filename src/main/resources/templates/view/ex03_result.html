@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h3>result 화면</h3>
+<th:block th:if="${vo != null}">
+[[${vo.num}]]<br>
+[[${vo.name}]]<br>
+[[${vo.age}]]<br>
+</th:block>
+</body>
+</html>

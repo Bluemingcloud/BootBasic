@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <th:block th:replace="~{./include/quizLayout :: func(~{ :: .container})}">
+        <h3>이 화면에 진입할 때 TestVO 를 Model 에 담아 화면처리를 합니다.</h3>
+        <p>
+            1. 회원정보확인 링크에는 quiz01_result?키=값 형태로 번호를 넘기고 출력해 주세요
+
+            2. 아래 class="container" 부분만 quizLayout 템플릿에 전달 될 수 있도록 처리하세요
+        </p>
+
+        <div class="container">
+            <a th:href="@{quiz01_regist}">회원등록</a>
+            <th:block th:each="vo : ${list}">
+                <p>회원번호:[[${vo.num}]]</p>
+                <p>이름:[[${vo.name}]]</p>
+                <p>나이:[[${vo.age}]]</p>
+                <a th:href="@{quiz01_result/{num}(num=${vo.num})}">회원정보 확인</a>
+            </th:block>
+        </div>
+    </th:block>
+
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <th:block th:replace="~{./include/quizLayout :: func(~{ :: .info})}">
+        <div class="info">
+            <p>회원번호:[[${vo.num}]]</p>
+            <p>이름:[[${vo.name}]]</p>
+            <p>나이:[[${vo.age}]]</p>
+            <a th:href="@{/quiz/quiz01}">목록으로</a>
+        </div>
+    </th:block>
+
+</html>

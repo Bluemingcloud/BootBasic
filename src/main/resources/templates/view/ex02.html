@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h3>반복문</h3>
+<!--    [[${list}]]-->
+    <ul>
+        <li th:each="vo : ${list}">
+            [[${vo.num}]]
+            [[${vo.name}]]
+            [[${vo.age}]]
+            [[${vo.addr}]]
+        </li>
+    </ul>
+
+    <h3>반복문과 state객체</h3>
+    <ul>
+        <li th:each="a, state : ${list}">
+            [[${state}]]<br>
+            [[${state.index}]]<br>
+            [[${state.count}]]<br>
+            [[${state.size}]]
+        </li><!-- a 에는 값, state 에는 인덱스, 커런트 등의 상태정보가 담긴다-->
+    </ul>
+
+    <h3>list의 vo num 이 짝수면 출력</h3>
+    <ul>
+        <li th:each="vo : ${list}" th:if="${vo.num % 2 == 0}">
+            [[${vo.num}]]
+            [[${vo.name}]]
+            [[${vo.age}]]
+            [[${vo.addr}]]
+        </li>
+    </ul>
+</body>
+</html>
