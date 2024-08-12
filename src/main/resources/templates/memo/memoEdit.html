@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+	span {color: red;}
+</style>
+
+</head>
+
+<body>
+
+	
+	<form action="/memo/memoEditForm" method="post" th:with="check=${dto != null}">
+		<h3>메모수정</h3>
+		<textarea name="memo" rows="5" cols="30" placeholder="내용을 작성해주세요(5글자 이상)" th:text="${check ? dto.memo : ''}"></textarea>
+		<span th:if="${check}" th:errors="${dto.memo}"></span><br>
+		<input type="text" name="phone" placeholder="연락받을 전화번호" th:value="${check ? dto.phone : ''}">
+		<span th:if="${check}" th:errors="${dto.phone}"></span><br>
+		<input type="password" name="pw" placeholder="비밀번호 숫자 4자리" th:value="${check ? dto.pw : ''}">
+		<span th:if="${check}" th:errors="${dto.pw}"></span><br>
+		
+		<!-- th:checked값이 true라면 체크처리 -->
+		<input type="radio" name="secret" value="n" th:checked="${check && dto.secret == 'n'}">공개글
+		<input type="radio" name="secret" value="y" th:checked="${check && dto.secret == 'y'}">비밀글
+		<input type="hidden" name="mno" th:value="${dto.mno}">
+		<input type="submit" value="수정">
+		<input type="button" onclick="location.href='memoList'" value="목록">
+	</form>
+
+	
+</body>
+</html>

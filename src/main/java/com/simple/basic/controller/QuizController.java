@@ -1,10 +1,13 @@
 package com.simple.basic.controller;
 
+import com.simple.basic.command.MemberVO;
 import com.simple.basic.command.TestVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,25 @@ public class QuizController {
                 .build();
         list.add(testVO);
         return "redirect:/quiz/quiz01";
+    }
+
+    @GetMapping("/quiz02")
+    public String quiz02() {
+        return "quiz/quiz02";
+    }
+
+    @GetMapping("/quiz02_result")
+    public String quiz02Result() {
+        return "quiz/quiz02_result";
+    }
+
+    @PostMapping("/quiz02Form")
+    public String quiz02Form(@Valid @ModelAttribute("vo") MemberVO vo, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "quiz/quiz02";
+        }
+        return "redirect:/quiz/quiz02_result";
     }
 
 }

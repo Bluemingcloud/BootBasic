@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz02</title>
+</head>
+<body>
+
+    <h3>로그인 유효성 검사</h3>
+
+<pre>
+아이디, 비밀번호에 대한 서버측 유효성 검사를 진행합니다.
+    1. MemberVO 를 생성하고 유효성 검사 작업을 진행합니다.
+        - 아이디의 정규표현식 [a-zA-Z0-9]{8,}
+        - 비밀번호의 정규표현식은 구글링으로 검색
+    2. 유효성 검사에 실패하면 quiz화면에 메세지, 사용자가 작성한 데이터를 띄워주면 됩니다.
+
+    3. 유효성 검사에 성공하면 quiz02_result 페이지로 이동합니다.
+
+    4. /quiz/quiz02 로 진입할 때 에러가 없도록 처리해 주세요.
+
+</pre>
+
+    <form action="quiz02Form" method="post" th:with="check=${vo != null}">
+        <input type="text" name="id" placeholder="아이디는 영문자,숫자 8자 이상입니다." th:value="${check ? vo.id : ''}"><br>
+        <span th:if="${check}" th:errors="${vo.id}"></span><br>
+        <input type="password" name="pw" placeholder="비밀번호는 영문자, 숫자, 특수문자 포함 8자 이상입니다." th:value="${check ? vo.pw : ''}">
+        <input type="checkbox" name="pwCheck" id="pwCheck">확인<br>
+        <span th:if="${check}" th:errors="${vo.pw}"></span><br>
+        <input type="submit" value="로그인">
+    </form>
+
+    <script th:inline="javascript">
+        var pw = document.querySelector("form > input[name=pw]");
+        document.getElementById("pwCheck").addEventListener('click', () => {
+            if(event.target.checked) {
+                pw.type="text";
+            } else {
+                pw.type="password";
+            }
+        });
+    </script>
+
+</body>
+</html>

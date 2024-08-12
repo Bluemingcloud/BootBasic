@@ -83,7 +83,7 @@ public class ThymleafController {
                 .build();
 
         model.addAttribute("name", "홍길동");
-        model.addAttribute("arr", new int[]{1, 2, 3});
+        model.addAttribute("arr", new Integer[] {1, 2, 3});
         model.addAttribute("now", new Date());
         model.addAttribute("vo", testVO);
 

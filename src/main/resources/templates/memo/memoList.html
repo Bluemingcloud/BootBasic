@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<h3>메모 목록</h3>
+	
+		<table>
+			<tr>
+				<td>번호</td>
+				<td>메모</td>
+				<td>연락처</td>
+				<td>공개여부</td>
+				<td>수정하기</td>
+				<td>비밀번호</td>
+			</tr>
+
+			<tr th:each="dto : ${list}" class="memoInfo">
+				<td th:text="${dto.mno}"></td>
+				<td th:text="${dto.secret == 'y' ? '비공개' : dto.memo}"></td>
+				<td th:text="${dto.secret == 'y' ? '비공개' : dto.phone}"></td>
+				<td th:text="${dto.secret == 'y' ? '비공개' : '공개'}"></td>
+				<td><a href="#" th:data-mno="${dto.mno}" th:data-pw="${dto.pw}">수정</a></td>
+				<td><input type="password" name="pwCheck"></td>
+			</tr>
+			
+	</table>
+	
+	<a href="memoWrite">메모쓰기</a>
+
+	<script th:inline="javascript">
+		var memoInfo = document.querySelectorAll(".memoInfo");
+		memoInfo.forEach(memo => {
+			memo.addEventListener('click', (e) => {
+				e.preventDefault();
+				if(e.target.tagName !== "A") return;
+				var mno = e.target.dataset.mno;
+				var pw = e.target.dataset.pw;
+				var pwCheck = memo.querySelector("td > input[name=pwCheck]");
+				if(pwCheck.value !== pw) {
+					alert("비밀번호가 일치하지 않습니다.");
+					return;
+				}
+				location.href = "memoEdit/" + mno;
+			})
+		})
+	</script>
+</body>
+</html>
