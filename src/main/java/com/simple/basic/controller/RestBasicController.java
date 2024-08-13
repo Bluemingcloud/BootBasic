@@ -1,22 +1,24 @@
 package com.simple.basic.controller;
 
+import com.simple.basic.command.MemoDTO;
+import com.simple.basic.command.MemoVO;
 import com.simple.basic.command.TestVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController// @Controller + @ResponseBody(컨트롤러에서 응답을 요청이 들어온 곳으로 바꿈)
 public class RestBasicController {
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World"; // 원래는 화면의 경로를 반환했으나 RestController 는 요청보낸 클라이언트("/hello") 로 응답한다.
-    }
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "Hello World"; // 원래는 화면의 경로를 반환했으나 RestController 는 요청보낸 클라이언트("/hello") 로 응답한다.
+//    }
 
     @GetMapping("/hello2")
     public String[] hello2() {
@@ -85,7 +87,7 @@ public class RestBasicController {
     //@PutMapping (수정), @DeleteMapping (삭제) - Post 방식과 거의 유사해서 모두 Post 요청처리로 대신하기에 잘 사용되지 않는다.
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // consumer - 반드시 이 타입으로 보내라!
+    // consumes - 반드시 이 타입으로 보내라!
     // produces - 내가 이 타입으로 줄게
     // 기본값 - "application/json"
     @PostMapping(value = "/getResult", consumes = "text/plain", produces = "text/html")
@@ -96,9 +98,12 @@ public class RestBasicController {
 
     // ResponseEntity<데이터 타입>
     // 응답 문서 명확하게 작성하기
+    @CrossOrigin({"http://127.0.0.1:5500", "http://localhost:5500"})
     @PostMapping("/getEntity")
-    public ResponseEntity<TestVO> getEntity() {
-        TestVO vo = new TestVO(1, "홍길동", 20, "서울시");
+    public ResponseEntity<TestVO> getEntity( @RequestBody TestVO vo) {
+
+        System.out.println("받은 데이터:" + vo.toString());
+        TestVO vo2 = new TestVO(1, "홍길동", 20, "서울시");
         // 1st
         // ResponseEntity entity = new ResponseEntity(vo, HttpStatus.OK);
 
@@ -106,10 +111,59 @@ public class RestBasicController {
         HttpHeaders header = new HttpHeaders();
         header.add("Authorization", "Bearer JSON WEB TOKEN");
         header.add("Content-Type", "application/json"); // produces 와 같은 표현
-        header.add("Access-Control-Allow-Origin", "http://example.com");
+        //header.add("Access-Control-Allow-Origin", "http://example.com");
 
-        ResponseEntity entity = new ResponseEntity(vo, header, HttpStatus.OK); // 데이터, 헤더, 상태값
+        ResponseEntity entity = new ResponseEntity(vo2, header, HttpStatus.OK); // 데이터, 헤더, 상태값
 
+        return entity;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    /*
+    요청주소 : /api/v1/getData
+    메서드 : get
+    요청 파라미터 : sno(숫자), name(문자)
+    응답 파라미터 : MemoVO
+    헤더에 담을 내용 : HttpStatus.OK
+     */
+    @GetMapping("/api/v1/getData")
+    public ResponseEntity<MemoVO> quiz01(@RequestParam("sno") int sno,
+                                         @RequestParam("name") String name) {
+        MemoVO vo = MemoVO.builder().name(name).sno(sno).build();
+        ResponseEntity entity = new ResponseEntity(vo, HttpStatus.OK);
+        return entity;
+    }
+
+    /*
+    요청주소 : /api/v1/getInfo
+    메서드 : post
+    요청 파라미터 : MemoVO 타입
+    응답 파라미터 : List<MemoVO> 타입
+    헤더에 담을 내용 : Content-type, HttpStatus.OK
+     */
+    @PostMapping("/api/v1/getInfo")
+    public ResponseEntity<List<MemoVO>> quiz02(@RequestBody @Valid MemoVO vo, BindingResult binding) {
+
+        if (binding.hasErrors()) {
+            System.out.println("유효성 검증에 실패함");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        System.out.println(vo.toString());
+
+        List<MemoVO> list = new ArrayList<>();
+        for(int i = 1; i <= 10; i++) {
+            MemoVO v = MemoVO.builder()
+                        .sno(i)
+                        .name("김길동" + i)
+                        .build();
+            list.add(v);
+        }
+
+        HttpHeaders header = new HttpHeaders();
+        header.add("Content-Type", "application/json");
+
+        ResponseEntity entity = new ResponseEntity(list, header, HttpStatus.OK);
         return entity;
     }
 }

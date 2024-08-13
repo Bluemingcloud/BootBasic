@@ -8,5 +8,111 @@
 
     타임리프로 만들어진 view 입니다.
 
+    <button type="button" id="getBtn">get방식</button>
+    <button type="button" id="postBtn">post방식</button>
+
+    <form action="/getForm" method="post">
+        <input type="text" name="name" placeholder="이름"><br>
+        <input type="number" name="age" placeholder="나이"><br>
+        <input type="text" name="addr" placeholder="주소">
+        <input type="submit" value="전송">
+    </form>
+
+    <button type="button" id="quiz01">quiz01</button>
+    <button type="button" id="quiz02">quiz02</button>
+
+<!--
+    <script>
+        var getBtn = document.getElementById("getBtn");
+        getBtn.addEventListener('click', function() {
+            fetch("/getData2/1/홍길동")
+                .then(response => response.text())
+                .then(data => console.log(data));
+        });
+
+        var postBtn = document.getElementById("postBtn");
+        postBtn.addEventListener('click', function() {
+            //post
+            fetch("/getEntity", {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify({
+                    num : 1,
+                    name : "김길동",
+                    age : 30,
+                    addr : "경기도"
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data));
+        });
+
+        var quiz01 = document.getElementById("quiz01");
+        quiz01.addEventListener('click', function () {
+            fetch("/api/v1/getData?sno=1&name=홍길동")
+                .then(response => response.json())
+                .then(data => console.log(data));
+        });
+
+        var quiz02 = document.getElementById("quiz02");
+        quiz02.addEventListener('click', function() {
+            fetch("/api/v1/getInfo", {
+                method : "POST",
+                headers : {"Content-Type" : "application/json"},
+                body : JSON.stringify({sno : 1, name : "홍길동"})
+            })
+            .then(response => response.json())
+            .then(data => console.log(data));
+        });
+    </script>
+-->
+<!-- JQuery 링크 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $("#getBtn").click(() => {
+            $.ajax({
+                type: "get", // 요청방식
+                url: "/getData2/1/이순신", // 요청주소
+                success: data => console.log(data),
+                error: (err, status) => console.log(err)
+            });
+        });
+        $("#postBtn").click(() => {
+            $.ajax({
+                type: "post", // 요청방식
+                url: "/getEntity", // 요청주소
+                data: JSON.stringify({ // 보낼 데이터
+                    num: 1,
+                    name: "홍순자"
+                }),
+                contentType: "application/json", // 보낼 데이터에 대한 타입 producer
+                dataType: "json", // 받을 데이터에 대한 타입 consumer(생략 가능)
+                success: data => console.log(data),
+                error: (err, status) => console.log(err)
+            });
+        });
+
+        $("#quiz01").click(() => {
+            $.ajax({
+                type: "get",
+                url: "/api/v1/getData?sno=1&name=홍길동",
+                success: data => console.log(data),
+                error: (err, status) => console.log(err)
+            });
+        });
+
+        $("#quiz02").click(() => {
+            $.ajax({
+                type: "post",
+                url: "/api/v1/getInfo",
+                data: JSON.stringify({sno : 1, name : "홍길동"}),
+                contentType: "application/json",
+                success: data => console.log(data),
+                error: (err, status) => console.log(err)
+            });
+        });
+    </script>
 </body>
 </html>
